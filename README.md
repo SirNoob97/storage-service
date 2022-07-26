@@ -1,2 +1,3 @@
 # storage-service
-Simple file storage spring boot application.
+
+File storage backend application.
