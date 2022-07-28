@@ -1,3 +1,5 @@
+-- File Table --
+
 CREATE TABLE "file"(
     "id" BIGINT NOT NULL,
     "file_name" VARCHAR(255) NOT NULL,
@@ -20,6 +22,8 @@ COMMENT
 ON COLUMN
     "file"."file_size" IS 'File size in bytes.';
 
+-- File_Data Table --
+
 CREATE TABLE "file_data"(
     "id" BIGINT NOT NULL,
     "file_data" bytea NOT NULL
@@ -27,6 +31,8 @@ CREATE TABLE "file_data"(
 
 ALTER TABLE
     "file_data" ADD PRIMARY KEY("id");
+
+-- Foreign keys --
 
 ALTER TABLE
     "file" ADD CONSTRAINT "file_file_data" FOREIGN KEY("data_id") REFERENCES "file_data"("id");
