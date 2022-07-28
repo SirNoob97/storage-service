@@ -10,6 +10,9 @@ ALTER TABLE
     "file" ADD PRIMARY KEY("id");
 
 ALTER TABLE
+    "file" ALTER COLUMN "id" ADD GENERATED ALWAYS AS IDENTITY(START WITH 1 INCREMENT 1);
+
+ALTER TABLE
     "file" ADD CONSTRAINT "file_data_id_unique" UNIQUE("data_id");
 
 CREATE TABLE "file_data"(
@@ -19,6 +22,9 @@ CREATE TABLE "file_data"(
 
 ALTER TABLE
     "file_data" ADD PRIMARY KEY("id");
+
+ALTER TABLE
+    "file_data" ALTER COLUMN "id" ADD GENERATED ALWAYS AS IDENTITY(START WITH 1 INCREMENT 1);
 
 ALTER TABLE
     "file" ADD CONSTRAINT "file_file_data" FOREIGN KEY("data_id") REFERENCES "file_data"("id");
