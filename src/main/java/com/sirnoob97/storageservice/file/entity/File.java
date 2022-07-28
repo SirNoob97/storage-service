@@ -1,4 +1,4 @@
-package com.sirnoob97.storageservice.file;
+package com.sirnoob97.storageservice.file.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
