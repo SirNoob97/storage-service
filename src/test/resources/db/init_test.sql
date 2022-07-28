@@ -1,5 +1,3 @@
--- File Table --
-
 CREATE TABLE "file"(
     "id" BIGINT NOT NULL,
     "file_name" VARCHAR(255) NOT NULL,
@@ -17,16 +15,6 @@ ALTER TABLE
 ALTER TABLE
     "file" ADD CONSTRAINT "file_data_id_unique" UNIQUE("data_id");
 
-COMMENT
-ON COLUMN
-    "file"."file_name" IS 'Only the name of the file, avoids absolute paths sent by clients.';
-
-COMMENT
-ON COLUMN
-    "file"."file_size" IS 'File size in bytes.';
-
--- File_Data Table --
-
 CREATE TABLE "file_data"(
     "id" BIGINT NOT NULL,
     "file_data" bytea NOT NULL
@@ -37,8 +25,6 @@ ALTER TABLE
 
 ALTER TABLE
     "file_data" ALTER COLUMN "id" ADD GENERATED ALWAYS AS IDENTITY(START WITH 1 INCREMENT 1);
-
--- Foreign keys --
 
 ALTER TABLE
     "file" ADD CONSTRAINT "file_file_data" FOREIGN KEY("data_id") REFERENCES "file_data"("id");
