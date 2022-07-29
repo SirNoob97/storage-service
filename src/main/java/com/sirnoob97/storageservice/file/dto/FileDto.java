@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-class FileDto {
+public class FileDto {
 
   public String fileName;
   public Long fileSize;

@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table
 @Entity
-class File {
+public class File {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
