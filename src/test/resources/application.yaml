@@ -2,16 +2,19 @@ spring:
   main:
     banner-mode: "off"
   datasource:
-    url: jdbc:tc:postgres:14-alpine3.16:///sn_storage_service_test?TC_INITSCRIPT=db/init_test.sql
-    #driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:postgresql:14-alpine3.16:///sn_storage_service_test?TC_INITSCRIPT=db/init_test.sql
     username: sn_user_test
     password: sn_user_test
   jpa:
-    #database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: false
-    show-sql: true
     hibernate:
       ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        use_sql_comments: false
+        format_sql: false
 
 logging:
   level:
