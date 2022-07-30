@@ -16,6 +16,7 @@ import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
 import com.sirnoob97.storageservice.file.dto.FileDto;
+import com.sirnoob97.storageservice.file.dto.FileInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,17 +28,47 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table
 @Entity
-@NamedNativeQueries(value = @NamedNativeQuery(name = "File.findFileDto", query = """
-    SELECT  f.file_name, f.file_size, f.mime_type, fd.file_data
+//@formatter:off
+@NamedNativeQueries(value = {
+  @NamedNativeQuery(name = "File.findFileDtoById",
+    query = """
+      SELECT f.file_name AS fileName,
+             f.file_size AS fileSize,
+             f.mime_type AS mimeType,
+             fd.file_data AS fileData
       FROM file AS f JOIN file_data AS fd
-      ON f.id = fd.id
-    """, resultSetMapping = "File.fileToFileDto"))
-@SqlResultSetMappings(value = @SqlResultSetMapping(name = "File.fileToFileDto",
-    classes = @ConstructorResult(targetClass = FileDto.class,
-        columns = {@ColumnResult(name = "file_name", type = String.class),
-            @ColumnResult(name = "file_size", type = Long.class),
-            @ColumnResult(name = "mime_type", type = String.class),
-            @ColumnResult(name = "file_data", type = Byte[].class)})))
+      ON f.data_id = fd.id
+      WHERE f.id = :id
+    """,
+    resultSetMapping = "Mapping.fileToFileDto"),
+  @NamedNativeQuery(name = "File.findFileInfoDtoById",
+    query = """
+      SELECT f.file_name AS fileName,
+             f.file_size AS fileSize,
+             f.mime_type AS mimeType
+      FROM file AS f
+      WHERE f.id = :id
+    """,
+    resultSetMapping = "Mapping.fileToFileInfoDto")
+  })
+@SqlResultSetMappings(value = {
+    @SqlResultSetMapping(name = "Mapping.fileToFileDto",
+      classes = @ConstructorResult(targetClass = FileDto.class,
+                  columns = {
+                    @ColumnResult(name = "fileName", type = String.class),
+                    @ColumnResult(name = "fileSize", type = Long.class),
+                    @ColumnResult(name = "mimeType", type = String.class),
+                    @ColumnResult(name = "fileData", type = Byte[].class)
+                  })),
+    @SqlResultSetMapping(name = "Mapping.fileToFileInfoDto",
+      classes = @ConstructorResult(targetClass = FileInfoDto.class,
+                  columns = {
+                    @ColumnResult(name = "fileName", type = String.class),
+                    @ColumnResult(name = "fileSize", type = Long.class),
+                    @ColumnResult(name = "mimeType", type = String.class)
+                  }))
+  })
+//@formatter:on
 public class File {
 
   @Id
