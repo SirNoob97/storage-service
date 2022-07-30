@@ -10,10 +10,10 @@ import lombok.Setter;
 @Getter
 public class FileInfoDto {
 
-  public String fileName;
-  public Long fileSize;
-  public String mimeType;
+  private String fileName;
+  private Long fileSize;
+  private String mimeType;
 
   @Setter
-  public String downloadUrl;
+  private String downloadUrl;
 }

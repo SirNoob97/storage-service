@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class FileDto {
 
-  public String fileName;
-  public Long fileSize;
-  public String mimeType;
-  public Byte[] fileData;
+  private String fileName;
+  private Long fileSize;
+  private String mimeType;
+  private Byte[] fileData;
 }
