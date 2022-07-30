@@ -1,12 +1,8 @@
 package com.sirnoob97.storageservice.file.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 public class FileInfoDto {
 
@@ -16,4 +12,12 @@ public class FileInfoDto {
 
   @Setter
   private String downloadUrl;
+
+  public FileInfoDto() {}
+
+  public FileInfoDto(String fileName, Long fileSize, String mimeType) {
+    this.fileName = fileName;
+    this.fileSize = fileSize;
+    this.mimeType = mimeType;
+  }
 }
