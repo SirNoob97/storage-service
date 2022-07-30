@@ -28,3 +28,8 @@ ALTER TABLE
 
 ALTER TABLE
     "file" ADD CONSTRAINT "file_file_data" FOREIGN KEY("data_id") REFERENCES "file_data"("id");
+
+
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+
+INSERT INTO file (file_name, file_size, mime_type, data_id) VALUES ('hostname', 8, 'text/plain', 1);
