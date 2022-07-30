@@ -2,8 +2,7 @@ spring:
   main:
     banner-mode: "off"
   datasource:
-    url: jdbc:tc:postgres:14-alpine3.16:///sn_storage_service_test?TC_INITSCRIPT=db/init_test.sql
-    #driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:postgresql:14-alpine3.16:///sn_storage_service_test?TC_INITSCRIPT=db/init_test.sql
     username: sn_user_test
     password: sn_user_test
   jpa:
