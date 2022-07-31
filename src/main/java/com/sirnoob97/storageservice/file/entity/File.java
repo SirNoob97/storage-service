@@ -43,7 +43,8 @@ import lombok.NoArgsConstructor;
     resultSetMapping = "Mapping.fileToFileDto"),
   @NamedNativeQuery(name = "File.findFileInfoDtoById",
     query = """
-      SELECT f.file_name AS fileName,
+      SELECT f.id As id,
+             f.file_name AS fileName,
              f.file_size AS fileSize,
              f.mime_type AS mimeType
       FROM file AS f
@@ -63,6 +64,7 @@ import lombok.NoArgsConstructor;
     @SqlResultSetMapping(name = "Mapping.fileToFileInfoDto",
       classes = @ConstructorResult(targetClass = FileInfoDto.class,
                   columns = {
+                    @ColumnResult(name = "id", type = Long.class),
                     @ColumnResult(name = "fileName", type = String.class),
                     @ColumnResult(name = "fileSize", type = Long.class),
                     @ColumnResult(name = "mimeType", type = String.class)
