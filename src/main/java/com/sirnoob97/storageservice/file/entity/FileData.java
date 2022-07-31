@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "file_data")
 @Entity
-class FileData {
+public class FileData {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
