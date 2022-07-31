@@ -29,5 +29,5 @@ public class FileData {
   @Lob
   @Basic(fetch = FetchType.LAZY)
   @Column(name = "file_data", nullable = false)
-  private Byte[] fileData;
+  private byte[] fileData;
 }
