@@ -20,7 +20,7 @@ class FileDataRepositoryTest {
   private FileDataRepository fileDataRepository;
 
   @Test
-  public void test_Save_ReturnANonFileDataEntity_WhenSuccessful() {
+  void test_Save_ReturnANonFileDataEntity_WhenSuccessful() {
     var fileData = randomFileData();
     var fileDataDb = fileDataRepository.save(fileData);
 

@@ -18,7 +18,7 @@ class FileRepositoryTest {
   private FileRepository fileRepository;
 
   @Test
-  public void test_FindFileDtoById_ReturnAFileDto_WhenSuccessful() {
+  void test_FindFileDtoById_ReturnAFileDto_WhenSuccessful() {
     var dto = fileRepository.findFileDtoById(1L);
 
     assertNotNull(dto);
@@ -26,7 +26,7 @@ class FileRepositoryTest {
   }
 
   @Test
-  public void test_FindFileInfoDtoById_ReturnANonNullFileInfoDto_WhenSuccessful() {
+  void test_FindFileInfoDtoById_ReturnANonNullFileInfoDto_WhenSuccessful() {
     var dto = fileRepository.findFileInfoDtoById(1L);
 
     assertNotNull(dto);
