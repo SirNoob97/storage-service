@@ -48,4 +48,15 @@ class FileDataRepositoryTest {
     var fileData = FileData.builder().fileData(null).build();
     assertThrows(DataIntegrityViolationException.class, () -> fileDataRepository.save(fileData));
   }
+
+  @Test
+  void test_Save_NoExceptionIsThrown_WhenFilaDataByteArrayIsEmpty() {
+    var emptyArray = new byte[0];
+    var fileData = FileData.builder().fileData(emptyArray).build();
+    var fileDataDb = assertDoesNotThrow(() -> fileDataRepository.save(fileData));
+
+    assertNotNull(fileDataDb);
+    assertEquals(emptyArray.length, fileData.getFileData().length);
+    assertEquals(emptyArray.length, fileDataDb.getFileData().length);
+  }
 }
