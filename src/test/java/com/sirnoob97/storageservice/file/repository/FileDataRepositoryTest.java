@@ -3,9 +3,12 @@ package com.sirnoob97.storageservice.file.repository;
 import static com.sirnoob97.storageservice.util.EntityGenerator.randomFileData;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Arrays;
 import javax.transaction.Transactional;
 import com.sirnoob97.storageservice.file.entity.FileData;
 import com.sirnoob97.storageservice.file.entity.FileDataRepository;
@@ -84,5 +87,33 @@ class FileDataRepositoryTest {
   @Test
   void test_FindById_ThrowInvalidDataAccessApiUsageException_WhenIdIsNull() {
     assertThrows(InvalidDataAccessApiUsageException.class, () -> fileDataRepository.findById(null));
+  }
+
+  @Test
+  void test_Save_UpdateTheFileDataEntityAndNoExceptionIsThrown_WhenFileDataArrayIsEmpty() {
+    var emptyArray = new byte[0];
+    var fileData = new FileData(1L, emptyArray);
+    var oldArray = fileDataRepository.findById(1L).get().getFileData();
+
+    var updated = assertDoesNotThrow(() -> fileDataRepository.save(fileData));
+    var areEquals = Arrays.equals(fileData.getFileData(), updated.getFileData());
+
+    assertNotNull(updated);
+    assertNotEquals(emptyArray.length, oldArray.length);
+    assertEquals(emptyArray.length, updated.getFileData().length);
+    assertTrue(areEquals);
+  }
+
+  // BUG: A null byte array show throw an exception, normal postgreSQL db does but not in this test method
+  @Test
+  void test_Save_UpdateTheFileDataEntityAndNoExceptionIsThrown_WhenFileDataArrayIsNull() {
+    var fileData = new FileData(1L, null);
+    var oldArray = fileDataRepository.findById(1L).get().getFileData();
+    var fileDataDb = fileDataRepository.save(fileData);
+
+    assertNotNull(fileDataDb);
+    assertNotNull(oldArray);
+    assertNull(fileData.getFileData());
+    assertNull(fileDataDb.getFileData());
   }
 }
