@@ -1,6 +1,7 @@
 package com.sirnoob97.storageservice.file.repository;
 
 import static com.sirnoob97.storageservice.util.EntityGenerator.randomFileData;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,7 +27,7 @@ class FileDataRepositoryTest {
   @Test
   void test_Save_ReturnANonFileDataEntity_WhenSuccessful() {
     var fileData = randomFileData();
-    var fileDataDb = fileDataRepository.save(fileData);
+    var fileDataDb = assertDoesNotThrow(() -> fileDataRepository.save(fileData));
 
     assertNotNull(fileData);
     assertNotNull(fileDataDb);
