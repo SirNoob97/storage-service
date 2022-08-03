@@ -23,3 +23,12 @@ logging:
         SQL: DEBUG
         cache: DEBUG
         stat: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+      springframework:
+        jdbc:
+          core:
+            JdbcTemplate: DEBUG
+            StatementCreatorUtils: TRACE
