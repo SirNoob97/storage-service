@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import javax.transaction.Transactional;
 import com.sirnoob97.storageservice.file.entity.FileData;
 import com.sirnoob97.storageservice.file.entity.FileDataRepository;
@@ -58,5 +59,30 @@ class FileDataRepositoryTest {
     assertNotNull(fileDataDb);
     assertEquals(emptyArray.length, fileData.getFileData().length);
     assertEquals(emptyArray.length, fileDataDb.getFileData().length);
+  }
+
+  @Test
+  void test_FindById_ReturnAPresentOptional_WhenSuccessful() {
+    var id = 1L;
+    var optional = fileDataRepository.findById(id);
+
+    assertNotNull(optional);
+    assertTrue(optional.isPresent());
+    assertNotNull(optional.get());
+    assertNotNull(optional.get().getId());
+    assertEquals(id, optional.get().getId());
+  }
+
+  @Test
+  void test_FindById_ReturnAnEmptyOptional_WhenNoFileDataEntityWasFound() {
+    var optional = fileDataRepository.findById(-1L);
+
+    assertNotNull(optional);
+    assertTrue(optional.isEmpty());
+  }
+
+  @Test
+  void test_FindById_ThrowInvalidDataAccessApiUsageException_WhenIdIsNull() {
+    assertThrows(InvalidDataAccessApiUsageException.class, () -> fileDataRepository.findById(null));
   }
 }
