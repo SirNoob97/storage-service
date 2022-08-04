@@ -5,13 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Arrays;
+
 import javax.transaction.Transactional;
-import com.sirnoob97.storageservice.file.entity.FileData;
-import com.sirnoob97.storageservice.file.entity.FileDataRepository;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -19,6 +19,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.transaction.TestTransaction;
+
+import com.sirnoob97.storageservice.file.entity.FileData;
+import com.sirnoob97.storageservice.file.entity.FileDataRepository;
 
 @DataJpaTest
 @Transactional
@@ -90,6 +95,7 @@ class FileDataRepositoryTest {
   }
 
   @Test
+  @Rollback(false)
   void test_Save_UpdateTheFileDataEntityAndNoExceptionIsThrown_WhenFileDataArrayIsEmpty() {
     var emptyArray = new byte[0];
     var fileData = new FileData(1L, emptyArray);
@@ -104,16 +110,22 @@ class FileDataRepositoryTest {
     assertTrue(areEquals);
   }
 
-  // BUG: A null byte array show throw an exception, normal postgreSQL db does but not in this test method
+  /**
+   * Hibernate rolls back the transaction when the non-null constraint violation
+   * occurs, so for Junit the exception was never thrown.
+   *
+   * To avoid this behavior @{org.springframework.test.context.transaction.TestTransaction}
+   * forces the transaction to commit and throws the exception.
+   */
   @Test
-  void test_Save_UpdateTheFileDataEntityAndNoExceptionIsThrown_WhenFileDataArrayIsNull() {
-    var fileData = new FileData(1L, null);
-    var oldArray = fileDataRepository.findById(1L).get().getFileData();
-    var fileDataDb = fileDataRepository.save(fileData);
+  void test_Save_DontUpdateAndThrowDataIntegrityViolationException_WhenFileDataArrayIsNull() {
+    var fileData = fileDataRepository.findById(1L).get();
+    fileData.setFileData(null);
 
-    assertNotNull(fileDataDb);
-    assertNotNull(oldArray);
-    assertNull(fileData.getFileData());
-    assertNull(fileDataDb.getFileData());
+    assertThrows(DataIntegrityViolationException.class, () -> {
+      TestTransaction.flagForCommit();
+      fileDataRepository.save(fileData);
+      TestTransaction.end();
+    });
   }
 }
