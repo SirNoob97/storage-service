@@ -2,6 +2,8 @@ package com.sirnoob97.storageservice.file.repository;
 
 import static com.sirnoob97.storageservice.util.EntityGenerator.randomFile;
 import static com.sirnoob97.storageservice.util.EntityGenerator.randomFileData;
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -12,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 
+import com.sirnoob97.storageservice.file.entity.FileDataRepository;
 import com.sirnoob97.storageservice.file.entity.FileRepository;
 
 @DataJpaTest
@@ -22,6 +27,9 @@ class FileRepositoryTest {
 
   @Autowired
   private FileRepository fileRepository;
+
+  @Autowired
+  private FileDataRepository fileDataRepository;
 
   @Test
   void test_FindFileDtoById_ReturnAPresentFileDtoOptional_WhenSuccessful() {
@@ -73,5 +81,25 @@ class FileRepositoryTest {
     assertTrue(optional.isEmpty());
   }
 
+  @Test
+  void test_Save_PersistAndRetunrAFileEntity_WhenSuccessful() {
+    var persistedData = fileDataRepository.save(randomFileData());
+    var file = randomFile();
+    file.setData(persistedData);
+
+    var fileDb = fileRepository.save(file);
+
+    assertNotNull(persistedData);
+    assertNotNull(fileDb);
+    assertNotNull(fileDb.getData());
+    assertEquals(file.getData(), fileDb.getData());
+    assertEquals(persistedData, fileDb.getData());
+  }
+
+  @Test
+  void test_Save_ThrowDataIntegrityViolationException_WhenFileDataIsNull() {
+    var file = randomFile();
+    file.setData(null);
+    assertThrows(DataIntegrityViolationException.class, () -> fileRepository.save(file));
   }
 }
