@@ -3,7 +3,6 @@ package com.sirnoob97.storageservice.file.repository;
 import static com.sirnoob97.storageservice.util.EntityGenerator.randomFile;
 import static com.sirnoob97.storageservice.util.EntityGenerator.randomFileData;
 import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -103,9 +102,6 @@ class FileRepositoryTest {
     assertThrows(DataIntegrityViolationException.class, () -> fileRepository.save(file));
   }
 
-  /**
-   * FIX: empty strings must be rejected
-   */
   @Test
   void test_Save_NothingIsThrown_WhenFileNameIsEmpty() {
     var fileData = fileDataRepository.save(randomFileData());
@@ -113,7 +109,7 @@ class FileRepositoryTest {
     file.setData(fileData);
     file.setFileName("");
 
-    assertDoesNotThrow(() -> fileRepository.save(file));
+    assertThrows(DataIntegrityViolationException.class, () -> fileRepository.save(file));
   }
 
   @Test
@@ -126,9 +122,6 @@ class FileRepositoryTest {
     assertThrows(DataIntegrityViolationException.class, () -> fileRepository.save(file));
   }
 
-  /**
-   * FIX: negative numbers must be rejected
-   */
   @Test
   void test_Save_NothingIsThrown_WhenFileSizeIsNegative() {
     var fileData = fileDataRepository.save(randomFileData());
@@ -136,7 +129,7 @@ class FileRepositoryTest {
     file.setData(fileData);
     file.setFileSize(-1L);
 
-    assertDoesNotThrow(() -> fileRepository.save(file));
+    assertThrows(DataIntegrityViolationException.class, () -> fileRepository.save(file));
   }
 
   @Test
@@ -149,9 +142,6 @@ class FileRepositoryTest {
     assertThrows(DataIntegrityViolationException.class, () -> fileRepository.save(file));
   }
 
-  /**
-   * FIX: empty string must be rejected
-   */
   @Test
   void test_Save_NothingIsThrown_WhenMimeTypeIsEmpty() {
     var fileData = fileDataRepository.save(randomFileData());
@@ -159,7 +149,7 @@ class FileRepositoryTest {
     file.setData(fileData);
     file.setMimeType("");
 
-    assertDoesNotThrow(() -> fileRepository.save(file));
+    assertThrows(DataIntegrityViolationException.class, () -> fileRepository.save(file));
   }
 
   @Test
