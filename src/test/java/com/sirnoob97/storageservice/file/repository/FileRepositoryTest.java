@@ -103,6 +103,19 @@ class FileRepositoryTest {
     assertThrows(DataIntegrityViolationException.class, () -> fileRepository.save(file));
   }
 
+  /**
+   * FIX: empty strings must be rejected
+   */
+  @Test
+  void test_Save_NothingIsThrown_WhenFileNameIsEmpty() {
+    var fileData = fileDataRepository.save(randomFileData());
+    var file = randomFile();
+    file.setData(fileData);
+    file.setFileName("");
+
+    assertDoesNotThrow(() -> fileRepository.save(file));
+  }
+
   @Test
   void test_Save_ThrowDataIntegrityViolationException_WhenFileNameIsNull() {
     var fileData = fileDataRepository.save(randomFileData());
@@ -113,6 +126,19 @@ class FileRepositoryTest {
     assertThrows(DataIntegrityViolationException.class, () -> fileRepository.save(file));
   }
 
+  /**
+   * FIX: negative numbers must be rejected
+   */
+  @Test
+  void test_Save_NothingIsThrown_WhenFileSizeIsNegative() {
+    var fileData = fileDataRepository.save(randomFileData());
+    var file = randomFile();
+    file.setData(fileData);
+    file.setFileSize(-1L);
+
+    assertDoesNotThrow(() -> fileRepository.save(file));
+  }
+
   @Test
   void test_Save_ThrowDataIntegrityViolationException_WhenFileSizeIsNull() {
     var fileData = fileDataRepository.save(randomFileData());
@@ -121,6 +147,19 @@ class FileRepositoryTest {
     file.setFileSize(null);
 
     assertThrows(DataIntegrityViolationException.class, () -> fileRepository.save(file));
+  }
+
+  /**
+   * FIX: empty string must be rejected
+   */
+  @Test
+  void test_Save_NothingIsThrown_WhenMimeTypeIsEmpty() {
+    var fileData = fileDataRepository.save(randomFileData());
+    var file = randomFile();
+    file.setData(fileData);
+    file.setMimeType("");
+
+    assertDoesNotThrow(() -> fileRepository.save(file));
   }
 
   @Test
