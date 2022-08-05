@@ -161,4 +161,13 @@ class FileRepositoryTest {
 
     assertThrows(DataIntegrityViolationException.class, () -> fileRepository.save(file));
   }
+
+  @Test
+  void test_Save_ThrowDataIntegrityViolationException_WhenFileDataIsAlreadyRelatedWithAnotherFileEntity() {
+    var fileData = fileDataRepository.findById(1L).get();
+    var file = randomFile();
+    file.setData(fileData);
+
+    assertThrows(DataIntegrityViolationException.class, () -> fileRepository.save(file));
+  }
 }
