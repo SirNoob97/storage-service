@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 
 import com.sirnoob97.storageservice.file.entity.FileDataRepository;
 import com.sirnoob97.storageservice.file.entity.FileRepository;
@@ -78,6 +79,31 @@ class FileRepositoryTest {
 
     assertNotNull(optional);
     assertTrue(optional.isEmpty());
+  }
+
+  @Test
+  void test_FindById_ReturnAPresentOptional_WhenSuccessful() {
+    var id = 1L;
+    var optional = fileRepository.findById(id);
+
+    assertNotNull(optional);
+    assertTrue(optional.isPresent());
+    assertNotNull(optional.get());
+    assertNotNull(optional.get().getId());
+    assertEquals(id, optional.get().getId());
+  }
+
+  @Test
+  void test_FindById_ReturnAnEmptyOptional_WhenNoFileEntityWasFound() {
+    var optional = fileRepository.findById(-1L);
+
+    assertNotNull(optional);
+    assertTrue(optional.isEmpty());
+  }
+
+  @Test
+  void test_FindById_ThrowInvalidDataAccessApiUsageException_WhenIdIsNull() {
+    assertThrows(InvalidDataAccessApiUsageException.class, () -> fileRepository.findById(null));
   }
 
   @Test
