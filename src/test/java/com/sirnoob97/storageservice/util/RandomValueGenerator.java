@@ -10,7 +10,8 @@ public class RandomValueGenerator {
   }
 
   public static long randomLong() {
-    return ThreadLocalRandom.current().nextLong();
+    var n = ThreadLocalRandom.current().nextLong();
+    return n > 0 ? n : n * -1;
   }
 
   public static byte[] randomByteArray() {
