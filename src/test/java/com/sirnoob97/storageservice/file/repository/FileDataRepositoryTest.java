@@ -19,7 +19,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.transaction.TestTransaction;
 
 import com.sirnoob97.storageservice.file.entity.FileData;
@@ -95,13 +94,17 @@ class FileDataRepositoryTest {
   }
 
   @Test
-  @Rollback(false)
   void test_Save_UpdateTheFileDataEntityAndNoExceptionIsThrown_WhenFileDataArrayIsEmpty() {
     var emptyArray = new byte[0];
     var fileData = new FileData(1L, emptyArray);
     var oldArray = fileDataRepository.findById(1L).get().getFileData();
 
-    var updated = assertDoesNotThrow(() -> fileDataRepository.save(fileData));
+    var updated = assertDoesNotThrow(() -> {
+      TestTransaction.flagForCommit();
+      var u = fileDataRepository.save(fileData);
+      TestTransaction.end();
+      return u;
+    });
     var areEquals = Arrays.equals(fileData.getFileData(), updated.getFileData());
 
     assertNotNull(updated);
