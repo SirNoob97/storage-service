@@ -2,8 +2,12 @@ package com.sirnoob97.storageservice.file.repository;
 
 import static com.sirnoob97.storageservice.util.EntityGenerator.randomFile;
 import static com.sirnoob97.storageservice.util.EntityGenerator.randomFileData;
+import static com.sirnoob97.storageservice.util.RandomValueGenerator.randomLong;
+import static com.sirnoob97.storageservice.util.RandomValueGenerator.randomString;
 import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -16,6 +20,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.test.context.transaction.TestTransaction;
 
 import com.sirnoob97.storageservice.file.entity.FileDataRepository;
 import com.sirnoob97.storageservice.file.entity.FileRepository;
@@ -195,5 +200,102 @@ class FileRepositoryTest {
     file.setData(fileData);
 
     assertThrows(DataIntegrityViolationException.class, () -> fileRepository.save(file));
+  }
+
+  @Test
+  void test_Save_UpdateAndReturnAFileEntity_WhenSuccessful() {
+    var file = fileRepository.findById(1L).get();
+    var oldFileName = file.getFileName();
+    var oldMimeType = file.getMimeType();
+    var oldFileSize = file.getFileSize();
+
+    file.setFileName(randomString());
+    file.setMimeType(randomString());
+    file.setFileSize(randomLong());
+
+    var updated = assertDoesNotThrow(() -> {
+      TestTransaction.flagForCommit();
+      var u = fileRepository.save(file);
+      TestTransaction.end();
+      return u;
+    });
+
+    assertNotNull(file);
+    assertNotNull(updated);
+    assertNotEquals(oldFileName, updated.getFileName());
+    assertNotEquals(oldMimeType, updated.getMimeType());
+    assertNotEquals(oldFileSize, updated.getFileSize());
+  }
+
+  @Test
+  void test_Save_DontUpdateAndThrowDataIntegrityViolationException_WhenFileNameIsEmpty() {
+    var file = fileRepository.findById(1L).get();
+    file.setFileName("");
+
+    assertThrows(DataIntegrityViolationException.class, () -> {
+      TestTransaction.flagForCommit();
+      fileRepository.save(file);
+      TestTransaction.end();
+    });
+  }
+
+  @Test
+  void test_Save_DontUpdateAndThrowDataIntegrityViolationException_WhenFileNameIsNull() {
+    var file = fileRepository.findById(1L).get();
+    file.setFileName(null);
+
+    assertThrows(DataIntegrityViolationException.class, () -> {
+      TestTransaction.flagForCommit();
+      fileRepository.save(file);
+      TestTransaction.end();
+    });
+  }
+
+  @Test
+  void test_Save_DontUpdateAndThrowDataIntegrityViolationException_WhenMimeTypeIsEmpty() {
+    var file = fileRepository.findById(1L).get();
+    file.setMimeType("");
+
+    assertThrows(DataIntegrityViolationException.class, () -> {
+      TestTransaction.flagForCommit();
+      fileRepository.save(file);
+      TestTransaction.end();
+    });
+  }
+
+  @Test
+  void test_Save_DontUpdateAndThrowDataIntegrityViolationException_WhenMimeTypeIsNull() {
+    var file = fileRepository.findById(1L).get();
+    file.setMimeType(null);
+
+    assertThrows(DataIntegrityViolationException.class, () -> {
+      TestTransaction.flagForCommit();
+      fileRepository.save(file);
+      TestTransaction.end();
+    });
+  }
+
+  @Test
+  void test_Save_DontUpdateAndThrowDataIntegrityViolationException_WhenFileSizeIsNegative() {
+    var file = fileRepository.findById(1L).get();
+    file.setFileSize(-1L);
+
+    assertThrows(DataIntegrityViolationException.class, () -> {
+      TestTransaction.flagForCommit();
+      fileRepository.save(file);
+      TestTransaction.end();
+    });
+  }
+
+  @Test
+  void test_Save_DontUpdateAndThrowDataIntegrityViolationException_WhenFileSizeIsNull() {
+    var file = fileRepository.findById(1L).get();
+    file.setFileSize(null);
+
+    assertThrows(DataIntegrityViolationException.class, () -> {
+      TestTransaction.flagForCommit();
+      fileRepository.save(file);
+      TestTransaction.end();
+    });
   }
 }
