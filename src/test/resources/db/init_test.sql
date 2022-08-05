@@ -15,6 +15,15 @@ ALTER TABLE
 ALTER TABLE
     "file" ADD CONSTRAINT "file_data_id_unique" UNIQUE("data_id");
 
+ALTER TABLE
+    "file" ADD CONSTRAINT "empty_file_name_chk" CHECK(LENGTH("file_name") > 0);
+
+ALTER TABLE
+    "file" ADD CONSTRAINT "empty_mime_type_chk" CHECK(LENGTH("mime_type") > 0);
+
+ALTER TABLE
+    "file" ADD CONSTRAINT "negative_file_size_chk" CHECK("file_size" > 0);
+
 CREATE TABLE "file_data"(
     "id" BIGINT NOT NULL,
     "file_data" oid NOT NULL
