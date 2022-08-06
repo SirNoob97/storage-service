@@ -39,6 +39,27 @@ ALTER TABLE
     "file" ADD CONSTRAINT "file_file_data" FOREIGN KEY("data_id") REFERENCES "file_data"("id");
 
 
+-- Testcontainers cant handle the postgreSQL dollar quoted syntax so this solution is temporal
+-- Exeption: org.testcontainers.ext.ScriptUtils$UncategorizedScriptException: Failed to execute database script...
+
+-- More information: https://github.com/testcontainers/testcontainers-java/issues/4441
+
+-- TODO: replace testcontainers settings in application.yaml by a programatic setup
+-- Try the docker compose integration: https://www.testcontainers.org/modules/docker_compose/
+-- Or normal containers with volumes mapping: https://www.testcontainers.org/features/files/
+CREATE OR REPLACE FUNCTION prevent_data_id_update_fn() RETURNS TRIGGER AS
+'
+BEGIN
+   RAISE EXCEPTION ''Column "data_id" is not editable'';
+END;
+' LANGUAGE PLPGSQL COST 100;
+
+CREATE TRIGGER prevent_update_trg
+BEFORE
+UPDATE OF "data_id" ON "file"
+FOR EACH ROW EXECUTE PROCEDURE prevent_data_id_update_fn();
+
+
 INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
 
 INSERT INTO file (file_name, file_size, mime_type, data_id) VALUES ('hostname', 8, 'text/plain', 1);
