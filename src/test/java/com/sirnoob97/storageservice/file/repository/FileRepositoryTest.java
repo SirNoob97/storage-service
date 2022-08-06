@@ -2,6 +2,7 @@ package com.sirnoob97.storageservice.file.repository;
 
 import static com.sirnoob97.storageservice.util.EntityGenerator.randomFile;
 import static com.sirnoob97.storageservice.util.EntityGenerator.randomFileData;
+import static com.sirnoob97.storageservice.util.RandomValueGenerator.randomByteArray;
 import static com.sirnoob97.storageservice.util.RandomValueGenerator.randomLong;
 import static com.sirnoob97.storageservice.util.RandomValueGenerator.randomString;
 import static org.junit.Assert.assertThrows;
@@ -20,6 +21,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.test.context.transaction.TestTransaction;
 
 import com.sirnoob97.storageservice.file.entity.FileDataRepository;
@@ -293,6 +295,43 @@ class FileRepositoryTest {
     file.setFileSize(null);
 
     assertThrows(DataIntegrityViolationException.class, () -> {
+      TestTransaction.flagForCommit();
+      fileRepository.save(file);
+      TestTransaction.end();
+    });
+  }
+
+  @Test
+  void test_Save_DontTrownException_WhenFileDataArrayIsUpdated() {
+    var file = fileRepository.findById(1L).get();
+    var fileData = file.getData();
+    var oldArray = fileData.getFileData();
+    fileData.setFileData(randomByteArray());
+
+    var fileDataUpdated = fileDataRepository.save(fileData);
+    file.setData(fileDataUpdated);
+
+    var fileUpdated = assertDoesNotThrow(() -> {
+      TestTransaction.flagForCommit();
+      var u = fileRepository.save(file);
+      TestTransaction.end();
+      return u;
+    });
+
+    assertNotNull(fileUpdated);
+    assertNotNull(fileUpdated.getData());
+    assertNotNull(fileDataUpdated.getFileData());
+    assertNotEquals(oldArray, fileUpdated.getData().getFileData());
+    assertNotEquals(oldArray, fileDataUpdated.getFileData());
+  }
+
+  @Test
+  void test_Save_ThrowJpaSystemException_WhenFileDataEntityIsReplacedWithAnotherAlreadyPersistedFileDataEntity() {
+    var fileData = fileDataRepository.save(randomFileData());
+    var file = fileRepository.findById(1L).get();
+    file.setData(fileData);
+
+    assertThrows(JpaSystemException.class, () -> {
       TestTransaction.flagForCommit();
       fileRepository.save(file);
       TestTransaction.end();
