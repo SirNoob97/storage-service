@@ -23,6 +23,7 @@ import org.springframework.test.context.transaction.TestTransaction;
 
 import com.sirnoob97.storageservice.file.entity.FileData;
 import com.sirnoob97.storageservice.file.entity.FileDataRepository;
+import com.sirnoob97.storageservice.file.entity.FileRepository;
 
 @DataJpaTest
 @Transactional
@@ -31,6 +32,9 @@ class FileDataRepositoryTest {
 
   @Autowired
   private FileDataRepository fileDataRepository;
+
+  @Autowired
+  private FileRepository fileRepository;
 
   @Test
   void test_Save_ReturnANonFileDataEntity_WhenSuccessful() {
@@ -130,5 +134,28 @@ class FileDataRepositoryTest {
       fileDataRepository.save(fileData);
       TestTransaction.end();
     });
+  }
+
+  @Test
+  void test_Delete_DeleteAFileDataRelatedWithAFileEntituAndReturnOne_WhenSuccessful() {
+    fileRepository.deleteFileById(1L);
+
+    var fileDataRet = fileDataRepository.deleteFileDataById(1L);
+    var optional = fileDataRepository.findById(1L);
+
+    assertEquals(1, fileDataRet);
+    assertNotNull(optional);
+    assertTrue(optional.isEmpty());
+  }
+
+  @Test
+  void test_Delete_ThrowDataIntegrityViolationException_WhenFileDataEntityIsRelatedWithAFile() {
+    assertThrows(DataIntegrityViolationException.class, () -> fileDataRepository.deleteFileDataById(1L));
+  }
+
+  @Test
+  void test_Delete_NoExceptionIsThrownAndReturnZero_WhenIdIsNull() {
+    var ret = assertDoesNotThrow(() -> fileDataRepository.deleteFileDataById(null));
+    assertEquals(0, ret);
   }
 }
