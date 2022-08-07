@@ -15,6 +15,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.sirnoob97.storageservice.file.dto.FileDto;
 import com.sirnoob97.storageservice.file.dto.FileInfoDto;
 import lombok.AllArgsConstructor;
@@ -28,6 +31,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table
 @Entity
+@DynamicUpdate
 //@formatter:off
 @NamedNativeQueries(value = {
   @NamedNativeQuery(name = "File.findFileDtoById",
