@@ -136,7 +136,7 @@ class FileRepositoryTest {
   }
 
   @Test
-  void test_Save_NothingIsThrown_WhenFileNameIsEmpty() {
+  void test_Save_DataIntegrityViolationException_WhenFileNameIsEmpty() {
     var fileData = fileDataRepository.save(randomFileData());
     var file = randomFile();
     file.setData(fileData);
@@ -156,7 +156,7 @@ class FileRepositoryTest {
   }
 
   @Test
-  void test_Save_NothingIsThrown_WhenFileSizeIsNegative() {
+  void test_Save_DataIntegrityViolationException_WhenFileSizeIsNegative() {
     var fileData = fileDataRepository.save(randomFileData());
     var file = randomFile();
     file.setData(fileData);
@@ -176,7 +176,7 @@ class FileRepositoryTest {
   }
 
   @Test
-  void test_Save_NothingIsThrown_WhenMimeTypeIsEmpty() {
+  void test_Save_ThrowDataIntegrityViolationException_WhenMimeTypeIsEmpty() {
     var fileData = fileDataRepository.save(randomFileData());
     var file = randomFile();
     file.setData(fileData);
