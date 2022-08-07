@@ -54,7 +54,7 @@ BEGIN
 END;
 ' LANGUAGE PLPGSQL COST 100;
 
-CREATE TRIGGER prevent_update_trg
+CREATE TRIGGER prevent_data_id_update_trg
 BEFORE
 UPDATE OF "data_id" ON "file"
 FOR EACH ROW EXECUTE PROCEDURE prevent_data_id_update_fn();
