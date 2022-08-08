@@ -2,12 +2,12 @@
 
 File storage backend application.
 
-This service stores files in a PostgreSQL database as BLOB(bytea).
+This service stores files in a PostgreSQL database as BLOB(oid).
 
 ## Requirements
 
-  * [Java 17+](https://projects.eclipse.org/projects/adoptium.temurin)
-  * [Docker](https://www.docker.com/)
+* [Java 17+](https://projects.eclipse.org/projects/adoptium.temurin)
+* [Docker](https://www.docker.com/)
 
 ## SQL Diagram
 
