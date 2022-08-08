@@ -63,7 +63,7 @@ import lombok.NoArgsConstructor;
                     @ColumnResult(name = "fileName", type = String.class),
                     @ColumnResult(name = "fileSize", type = Long.class),
                     @ColumnResult(name = "mimeType", type = String.class),
-                    @ColumnResult(name = "fileData", type = Byte[].class)
+                    @ColumnResult(name = "fileData", type = byte[].class)
                   })),
     @SqlResultSetMapping(name = "Mapping.fileToFileInfoDto",
       classes = @ConstructorResult(targetClass = FileInfoDto.class,

@@ -12,5 +12,5 @@ public class FileDto {
   private String fileName;
   private Long fileSize;
   private String mimeType;
-  private Byte[] fileData;
+  private byte[] fileData;
 }
