@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 public class FileInfoDto {
 
+  private Long id;
   private String fileName;
   private Long fileSize;
   private String mimeType;
@@ -15,7 +16,8 @@ public class FileInfoDto {
 
   public FileInfoDto() {}
 
-  public FileInfoDto(String fileName, Long fileSize, String mimeType) {
+  public FileInfoDto(Long id, String fileName, Long fileSize, String mimeType) {
+    this.id = id;
     this.fileName = fileName;
     this.fileSize = fileSize;
     this.mimeType = mimeType;

@@ -15,6 +15,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.sirnoob97.storageservice.file.dto.FileDto;
 import com.sirnoob97.storageservice.file.dto.FileInfoDto;
 import lombok.AllArgsConstructor;
@@ -28,6 +31,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table
 @Entity
+@DynamicUpdate
 //@formatter:off
 @NamedNativeQueries(value = {
   @NamedNativeQuery(name = "File.findFileDtoById",
@@ -43,7 +47,8 @@ import lombok.NoArgsConstructor;
     resultSetMapping = "Mapping.fileToFileDto"),
   @NamedNativeQuery(name = "File.findFileInfoDtoById",
     query = """
-      SELECT f.file_name AS fileName,
+      SELECT f.id As id,
+             f.file_name AS fileName,
              f.file_size AS fileSize,
              f.mime_type AS mimeType
       FROM file AS f
@@ -63,6 +68,7 @@ import lombok.NoArgsConstructor;
     @SqlResultSetMapping(name = "Mapping.fileToFileInfoDto",
       classes = @ConstructorResult(targetClass = FileInfoDto.class,
                   columns = {
+                    @ColumnResult(name = "id", type = Long.class),
                     @ColumnResult(name = "fileName", type = String.class),
                     @ColumnResult(name = "fileSize", type = Long.class),
                     @ColumnResult(name = "mimeType", type = String.class)

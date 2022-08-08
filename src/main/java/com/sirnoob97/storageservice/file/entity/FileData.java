@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "file_data")
 @Entity
-class FileData {
+public class FileData {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,5 +29,5 @@ class FileData {
   @Lob
   @Basic(fetch = FetchType.LAZY)
   @Column(name = "file_data", nullable = false)
-  private Byte[] fileData;
+  private byte[] fileData;
 }
