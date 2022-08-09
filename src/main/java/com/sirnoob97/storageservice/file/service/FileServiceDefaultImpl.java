@@ -54,7 +54,7 @@ public class FileServiceDefaultImpl implements FileService {
 
   /**
    * TODO:
-   * 1) Create a new native query to return a set of @see com.sirnoob97.storageservice.file.dto.FileInfoDto
+   * 1) Create a new native query to return a set of {@link com.sirnoob97.storageservice.file.dto.FileInfoDto}
    * 2) Create an enum for the order criteria
    */
   @Override
@@ -62,6 +62,13 @@ public class FileServiceDefaultImpl implements FileService {
     return null;
   }
 
+  /**
+   * BUG: This method should delete both {@link com.sirnoob97.storageservice.file.entity.File} and the {@link com.sirnoob97.storageservice.file.entity.FileData}
+   *  without a previous search of the {@link com.sirnoob97.storageservice.file.entity.File} entity
+   * 
+   * Refactor the native query to delete the related {@link com.sirnoob97.storageservice.file.entity.FileData}
+   * Or add a cascade on delete operations in the sql table
+   */
   @Override
   public void deleteFile(long id) {
     int ret = fileRepository.deleteFileById(id);
