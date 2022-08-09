@@ -2,14 +2,16 @@ package com.sirnoob97.storageservice.file.service;
 
 import java.util.Set;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.sirnoob97.storageservice.file.dto.FileDto;
 import com.sirnoob97.storageservice.file.dto.FileInfoDto;
 
 public interface FileService {
   
-  Long persistFile();
+  long persistFile(MultipartFile mpf);
 
-  FileInfoDto getFileInfoDto();
+  FileInfoDto getFileInfoDto(long id);
 
   FileDto getFileDto(Long id);
 
