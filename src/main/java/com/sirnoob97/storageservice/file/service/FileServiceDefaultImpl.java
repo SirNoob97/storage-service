@@ -60,8 +60,13 @@ public class FileServiceDefaultImpl implements FileService {
         () -> FILE_NOT_FOUND_EXCEPTION);
   }
 
+  /**
+   * TODO:
+   * 1) Create a new native query to return a set of @see com.sirnoob97.storageservice.file.dto.FileInfoDto
+   * 2) Create an enum for the order criteria
+   */
   @Override
-  public Set<FileInfoDto> listFiles(int limit, int offset) {
+  public Set<FileInfoDto> listFiles(int limit, int offset, String orderBy) {
     return null;
   }
 
