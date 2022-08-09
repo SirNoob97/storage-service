@@ -13,9 +13,9 @@ public interface FileService {
 
   FileInfoDto getFileInfoDto(long id);
 
-  FileDto getFileDto(Long id);
+  FileDto getFileDto(long id);
 
   Set<FileInfoDto> listFiles(int limit, int offset);
 
-  void deleteFile(Long id);
+  void deleteFile(long id);
 }
