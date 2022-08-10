@@ -52,7 +52,7 @@ import lombok.NoArgsConstructor;
              f.file_size AS fileSize,
              f.mime_type AS mimeType
       FROM file AS f
-      ORDER BY :orderBy DESC
+      ORDER BY :orderBy
       LIMIT :limit
       OFFSET :offset
     """,
