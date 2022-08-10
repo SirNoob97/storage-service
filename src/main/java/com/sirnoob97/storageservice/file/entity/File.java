@@ -45,14 +45,16 @@ import lombok.NoArgsConstructor;
       WHERE f.id = :id
     """,
     resultSetMapping = "Mapping.fileToFileDto"),
-  @NamedNativeQuery(name = "File.findFileInfoDtoById",
+  @NamedNativeQuery(name = "File.listFileInfoDtos",
     query = """
       SELECT f.id As id,
              f.file_name AS fileName,
              f.file_size AS fileSize,
              f.mime_type AS mimeType
       FROM file AS f
-      WHERE f.id = :id
+      ORDER BY :orderBy DESC
+      LIMIT :limit
+      OFFSET :offset
     """,
     resultSetMapping = "Mapping.fileToFileInfoDto")
   })
