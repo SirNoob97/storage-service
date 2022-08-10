@@ -5,6 +5,7 @@ import static com.sirnoob97.storageservice.util.DtoGenerator.randomFileInfoDto;
 import static com.sirnoob97.storageservice.util.RandomValueGenerator.randomByteArray;
 import static com.sirnoob97.storageservice.util.RandomValueGenerator.randomString;
 import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -96,5 +97,21 @@ class FileServiceTest {
     given(fileRepository.findFileDtoById(anyLong())).willReturn(Optional.empty());
     assertThrows(ResponseStatusException.class, () -> fileService.getFileDto(1L));
     verify(fileRepository, times(1)).findFileDtoById(anyLong());
+  }
+
+  @Test
+  void test_Delete_NoExceptionIsThrown() {
+    given(fileDataRepository.deleteFileDataById(anyLong())).willReturn(1);
+
+    assertDoesNotThrow(() -> fileService.deleteFile(1L));
+    verify(fileDataRepository, times(1)).deleteFileDataById(anyLong());
+  }
+
+  @Test
+  void test_Delete_ThrowResponseStatusException() {
+    given(fileDataRepository.deleteFileDataById(anyLong())).willReturn(0);
+
+    assertThrows(ResponseStatusException.class, () -> fileService.deleteFile(1L));
+    verify(fileDataRepository, times(1)).deleteFileDataById(anyLong());
   }
 }
