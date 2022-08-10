@@ -150,7 +150,8 @@ class FileDataRepositoryTest {
 
   @Test
   void test_Delete_ThrowDataIntegrityViolationException_WhenFileDataEntityIsRelatedWithAFile() {
-    assertThrows(DataIntegrityViolationException.class, () -> fileDataRepository.deleteFileDataById(1L));
+    var ret = assertDoesNotThrow(() -> fileDataRepository.deleteFileDataById(1L));
+    assertEquals(1, ret);
   }
 
   @Test
