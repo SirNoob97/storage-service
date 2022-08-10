@@ -3,6 +3,8 @@ package com.sirnoob97.storageservice.file.service;
 import java.io.IOException;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +20,7 @@ import com.sirnoob97.storageservice.file.entity.FileRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class FileServiceDefaultImpl implements FileService {
 
@@ -62,16 +65,9 @@ public class FileServiceDefaultImpl implements FileService {
     return null;
   }
 
-  /**
-   * BUG: This method should delete both {@link com.sirnoob97.storageservice.file.entity.File} and the {@link com.sirnoob97.storageservice.file.entity.FileData}
-   *  without a previous search of the {@link com.sirnoob97.storageservice.file.entity.File} entity
-   * 
-   * Refactor the native query to delete the related {@link com.sirnoob97.storageservice.file.entity.FileData}
-   * Or add a cascade on delete operations in the sql table
-   */
   @Override
   public void deleteFile(long id) {
-    int ret = fileRepository.deleteFileById(id);
+    int ret = fileDataRepository.deleteFileDataById(id);
 
     if (ret == 0) {
       throw FILE_NOT_FOUND_EXCEPTION;
