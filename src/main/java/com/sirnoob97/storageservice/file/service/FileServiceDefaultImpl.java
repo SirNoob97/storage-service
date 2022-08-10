@@ -44,12 +44,6 @@ public class FileServiceDefaultImpl implements FileService {
   }
 
   @Override
-  public FileInfoDto getFileInfoDto(long id) {
-    return fileRepository.findFileInfoDtoById(id).orElseThrow(
-        () -> FILE_NOT_FOUND_EXCEPTION);
-  }
-
-  @Override
   public FileDto getFileDto(long id) {
     return fileRepository.findFileDtoById(id).orElseThrow(
         () -> FILE_NOT_FOUND_EXCEPTION);
