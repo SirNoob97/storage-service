@@ -337,20 +337,4 @@ class FileRepositoryTest {
       TestTransaction.end();
     });
   }
-
-  @Test
-  void test_Delete_DeleteAFileRelatedWithAFileDataEntityAndReturnOne_WhenSuccessful() {
-    var ret = fileRepository.deleteFileById(1L);
-    var optional = fileRepository.findById(1L);
-
-    assertEquals(1, ret);
-    assertNotNull(optional);
-    assertTrue(optional.isEmpty());
-  }
-
-  @Test
-  void test_Delete_NoExceptionIsThrownAndReturnZero_WhenIdIsNull() {
-    var ret = assertDoesNotThrow(() -> fileRepository.deleteFileById(null));
-    assertEquals(0, ret);
-  }
 }
