@@ -36,7 +36,7 @@ ALTER TABLE
     file_data ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY(START WITH 1 INCREMENT 1);
 
 ALTER TABLE
-    file ADD CONSTRAINT file_file_data FOREIGN KEY(data_id) REFERENCES file_data(id);
+    file ADD CONSTRAINT file_file_data FOREIGN KEY(data_id) REFERENCES file_data(id) ON DELETE CASCADE;
 
 
 -- Testcontainers cant handle the postgreSQL dollar quoted syntax so this solution is temporal
