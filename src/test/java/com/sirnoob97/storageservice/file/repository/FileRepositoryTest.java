@@ -8,6 +8,7 @@ import static com.sirnoob97.storageservice.util.RandomValueGenerator.randomStrin
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -64,28 +65,36 @@ class FileRepositoryTest {
   }
 
   @Test
-  void test_FindFileInfoDtoById_ReturnAPresentFileInfoDtoOptional_WhenSuccessful() {
-    var optional = fileRepository.findFileInfoDtoById(1L);
+  void test_ListFileInfoDtos_ReturnANonEmptySetOfFileInfoDto_WhenSuccessful() {
+    var optional = fileRepository.listFileInfoDtos(10, 0, "fileName");
 
     assertNotNull(optional);
-    assertTrue(optional.isPresent());
-    assertNotNull(optional.get());
+    assertFalse(optional.isEmpty());
+    assertTrue(optional.size() > 0);
   }
 
   @Test
-  void test_FindFileInfoDtoById_ReturnAnEmptyFileInfoDtoOptional_WhenNoFileWasFound() {
-    var optional = fileRepository.findFileInfoDtoById(-1L);
+  void test_ListFileInfoDtos_ReturnAnEmptySetOfFileInfoDto_WhenOffsetIsTooHigh() {
+    var optional = fileRepository.listFileInfoDtos(10, 1000000, "fileName");
 
     assertNotNull(optional);
     assertTrue(optional.isEmpty());
   }
 
   @Test
-  void test_FindFileInfoDtoById_ReturnAnEmptyFileInfoDtoOptional_WhenIdIsNull() {
-    var optional = fileRepository.findFileInfoDtoById(null);
+  void test_ListFileInfoDtos_ReturnAnEmptySetOfFileInfoDto_WhenLimitIsZero() {
+    var optional = fileRepository.listFileInfoDtos(0, 0, "fileName");
 
     assertNotNull(optional);
     assertTrue(optional.isEmpty());
+  }
+
+  @Test
+  void test_ListFileInfoDtos_ReturnAnEmptySetOfFileInfoDto_WhenOrderByCriteriaIsNull() {
+    var optional = fileRepository.listFileInfoDtos(10, 0, null);
+
+    assertNotNull(optional);
+    assertFalse(optional.isEmpty());
   }
 
   @Test

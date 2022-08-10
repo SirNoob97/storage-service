@@ -6,17 +6,20 @@ import static com.sirnoob97.storageservice.util.RandomValueGenerator.randomByteA
 import static com.sirnoob97.storageservice.util.RandomValueGenerator.randomString;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,21 +68,25 @@ class FileServiceTest {
   }
 
   @Test
-  void test_GetFileInfoDto_ReturnAPresentOptionalOfFileInfoDto() {
-    given(fileRepository.findFileInfoDtoById(anyLong())).willReturn(Optional.of(randomFileInfoDto()));
-    var ret = fileService.getFileInfoDto(1L);
+  void test_ListFiles_ReturnANonEmptySetOfFileInfoDto() {
+    var fileInfoDto = randomFileInfoDto();
+    given(fileRepository.listFileInfoDtos(anyInt(), anyInt(), anyString())).willReturn(Set.of(fileInfoDto));
+    var ret = fileService.listFiles(1, 0, "fileName");
 
     assertNotNull(ret);
-    assertNotNull(ret.getId());
-    assertNull(ret.getDownloadUrl());
-    verify(fileRepository, times(1)).findFileInfoDtoById(anyLong());
+    assertFalse(ret.isEmpty());
+    assertTrue(ret.contains(fileInfoDto));
+    verify(fileRepository, times(1)).listFileInfoDtos(anyInt(), anyInt(), anyString());
   }
 
   @Test
-  void test_GetFileInfoDto_ReturnAEmptyOptionalOfFileInfoDto() {
-    given(fileRepository.findFileInfoDtoById(anyLong())).willReturn(Optional.empty());
-    assertThrows(ResponseStatusException.class, () -> fileService.getFileInfoDto(1L));
-    verify(fileRepository, times(1)).findFileInfoDtoById(anyLong());
+  void test_ListFiles_ReturnAnEmptySetOfFileInfoDto() {
+    given(fileRepository.listFileInfoDtos(anyInt(), anyInt(), anyString())).willReturn(Set.of());
+    var ret = fileService.listFiles(1, 0, "fileName");
+
+    assertNotNull(ret);
+    assertTrue(ret.isEmpty());
+    verify(fileRepository, times(1)).listFileInfoDtos(anyInt(), anyInt(), anyString());
   }
 
   @Test

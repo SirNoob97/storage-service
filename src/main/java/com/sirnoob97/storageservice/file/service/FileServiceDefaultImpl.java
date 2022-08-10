@@ -44,25 +44,14 @@ public class FileServiceDefaultImpl implements FileService {
   }
 
   @Override
-  public FileInfoDto getFileInfoDto(long id) {
-    return fileRepository.findFileInfoDtoById(id).orElseThrow(
-        () -> FILE_NOT_FOUND_EXCEPTION);
-  }
-
-  @Override
   public FileDto getFileDto(long id) {
     return fileRepository.findFileDtoById(id).orElseThrow(
         () -> FILE_NOT_FOUND_EXCEPTION);
   }
 
-  /**
-   * TODO:
-   * 1) Create a new native query to return a set of {@link com.sirnoob97.storageservice.file.dto.FileInfoDto}
-   * 2) Create an enum for the order criteria
-   */
   @Override
   public Set<FileInfoDto> listFiles(int limit, int offset, String orderBy) {
-    return null;
+    return fileRepository.listFileInfoDtos(limit, offset, orderBy);
   }
 
   @Override

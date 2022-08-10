@@ -12,8 +12,6 @@ public interface FileService {
   
   long persistFile(MultipartFile mpf) throws IOException;
 
-  FileInfoDto getFileInfoDto(long id);
-
   FileDto getFileDto(long id);
 
   Set<FileInfoDto> listFiles(int limit, int offset, String orderBy);
