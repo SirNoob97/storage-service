@@ -23,7 +23,6 @@ import org.springframework.test.context.transaction.TestTransaction;
 
 import com.sirnoob97.storageservice.file.entity.FileData;
 import com.sirnoob97.storageservice.file.entity.FileDataRepository;
-import com.sirnoob97.storageservice.file.entity.FileRepository;
 
 @DataJpaTest
 @Transactional
@@ -32,9 +31,6 @@ class FileDataRepositoryTest {
 
   @Autowired
   private FileDataRepository fileDataRepository;
-
-  @Autowired
-  private FileRepository fileRepository;
 
   @Test
   void test_Save_ReturnANonFileDataEntity_WhenSuccessful() {
@@ -138,8 +134,6 @@ class FileDataRepositoryTest {
 
   @Test
   void test_Delete_DeleteAFileDataRelatedWithAFileEntituAndReturnOne_WhenSuccessful() {
-    fileRepository.deleteFileById(1L);
-
     var fileDataRet = fileDataRepository.deleteFileDataById(1L);
     var optional = fileDataRepository.findById(1L);
 
