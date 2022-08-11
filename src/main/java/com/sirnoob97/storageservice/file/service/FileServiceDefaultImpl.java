@@ -50,8 +50,8 @@ public class FileServiceDefaultImpl implements FileService {
   }
 
   @Override
-  public Set<FileInfoDto> listFiles(int limit, int offset, String orderBy) {
-    return fileRepository.listFileInfoDtos(limit, offset, orderBy);
+  public Set<FileInfoDto> listFiles(int limit, int offset) {
+    return fileRepository.listFileInfoDtos(limit, offset);
   }
 
   @Override

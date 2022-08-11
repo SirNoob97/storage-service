@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -70,23 +69,23 @@ class FileServiceTest {
   @Test
   void test_ListFiles_ReturnANonEmptySetOfFileInfoDto() {
     var fileInfoDto = randomFileInfoDto();
-    given(fileRepository.listFileInfoDtos(anyInt(), anyInt(), anyString())).willReturn(Set.of(fileInfoDto));
-    var ret = fileService.listFiles(1, 0, "fileName");
+    given(fileRepository.listFileInfoDtos(anyInt(), anyInt())).willReturn(Set.of(fileInfoDto));
+    var ret = fileService.listFiles(1, 0);
 
     assertNotNull(ret);
     assertFalse(ret.isEmpty());
     assertTrue(ret.contains(fileInfoDto));
-    verify(fileRepository, times(1)).listFileInfoDtos(anyInt(), anyInt(), anyString());
+    verify(fileRepository, times(1)).listFileInfoDtos(anyInt(), anyInt());
   }
 
   @Test
   void test_ListFiles_ReturnAnEmptySetOfFileInfoDto() {
-    given(fileRepository.listFileInfoDtos(anyInt(), anyInt(), anyString())).willReturn(Set.of());
-    var ret = fileService.listFiles(1, 0, "fileName");
+    given(fileRepository.listFileInfoDtos(anyInt(), anyInt())).willReturn(Set.of());
+    var ret = fileService.listFiles(1, 0);
 
     assertNotNull(ret);
     assertTrue(ret.isEmpty());
-    verify(fileRepository, times(1)).listFileInfoDtos(anyInt(), anyInt(), anyString());
+    verify(fileRepository, times(1)).listFileInfoDtos(anyInt(), anyInt());
   }
 
   @Test

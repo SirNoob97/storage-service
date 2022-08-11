@@ -17,5 +17,5 @@ public interface FileRepository extends JpaRepository<File, Long> {
   Optional<FileDto> findFileDtoById(Long id);
 
   @Query(nativeQuery = true)
-  Set<FileInfoDto> listFileInfoDtos(int limit, int offset, String orderBy);
+  Set<FileInfoDto> listFileInfoDtos(int limit, int offset);
 }
