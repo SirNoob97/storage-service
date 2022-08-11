@@ -25,7 +25,6 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.test.context.transaction.TestTransaction;
 
-import com.sirnoob97.storageservice.file.dto.FileInfoDto;
 import com.sirnoob97.storageservice.file.entity.FileDataRepository;
 import com.sirnoob97.storageservice.file.entity.FileRepository;
 
@@ -67,37 +66,35 @@ class FileRepositoryTest {
 
   @Test
   void test_ListFileInfoDtos_ReturnANonEmptySetOfFileInfoDto_WhenSuccessful() {
-    var optional = fileRepository.listFileInfoDtos(10, 0);
+    var set = fileRepository.listFileInfoDtos(10, 0);
 
-    optional.stream().map(FileInfoDto::getFileName).forEach(System.out::println);
-
-    assertNotNull(optional);
-    assertFalse(optional.isEmpty());
-    assertTrue(optional.size() > 0);
+    assertNotNull(set);
+    assertFalse(set.isEmpty());
+    assertTrue(set.size() > 0);
   }
 
   @Test
   void test_ListFileInfoDtos_ReturnAnEmptySetOfFileInfoDto_WhenOffsetIsTooHigh() {
-    var optional = fileRepository.listFileInfoDtos(10, 1000000);
+    var set = fileRepository.listFileInfoDtos(10, 1000000);
 
-    assertNotNull(optional);
-    assertTrue(optional.isEmpty());
+    assertNotNull(set);
+    assertTrue(set.isEmpty());
   }
 
   @Test
   void test_ListFileInfoDtos_ReturnAnEmptySetOfFileInfoDto_WhenLimitIsZero() {
-    var optional = fileRepository.listFileInfoDtos(0, 0);
+    var set = fileRepository.listFileInfoDtos(0, 0);
 
-    assertNotNull(optional);
-    assertTrue(optional.isEmpty());
+    assertNotNull(set);
+    assertTrue(set.isEmpty());
   }
 
   @Test
   void test_ListFileInfoDtos_ReturnAnEmptySetOfFileInfoDto_WhenOrderByCriteriaIsNull() {
-    var optional = fileRepository.listFileInfoDtos(10, 0);
+    var set = fileRepository.listFileInfoDtos(10, 0);
 
-    assertNotNull(optional);
-    assertFalse(optional.isEmpty());
+    assertNotNull(set);
+    assertFalse(set.isEmpty());
   }
 
   @Test
