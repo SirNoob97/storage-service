@@ -59,9 +59,12 @@ class FileServiceTest {
     given(fileRepository.save(any(File.class))).willReturn(staticFile);
 
     var mpf = new MockMultipartFile(randomString(), "", randomString(), randomByteArray());
-    long ret = fileService.persistNewFile(mpf);
+    var url = "/TEST/";
+    var ret = fileService.persistNewFile(mpf, url);
 
-    assertTrue(ret > 0L);
+    assertNotNull(ret);
+    assertNotNull(ret.getDownloadUrl());
+    assertTrue(ret.getDownloadUrl().contains(url));
     verify(fileRepository, times(1)).save(any());
     verify(fileDataRepository, times(1)).save(any());
   }
