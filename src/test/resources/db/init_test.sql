@@ -26,7 +26,7 @@ ALTER TABLE
 
 CREATE TABLE file_data(
     id BIGINT NOT NULL,
-    file_data oid NOT NULL
+    file_data bytea NOT NULL
 );
 
 ALTER TABLE
