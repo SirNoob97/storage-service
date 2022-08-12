@@ -52,7 +52,7 @@ ALTER TABLE
 -- Foreign keys --
 
 ALTER TABLE
-    file ADD CONSTRAINT file_file_data FOREIGN KEY(data_id) REFERENCES file_data(id);
+    file ADD CONSTRAINT file_file_data FOREIGN KEY(data_id) REFERENCES file_data(id) ON DELETE CASCADE;
 
 -- Procedures --
 
