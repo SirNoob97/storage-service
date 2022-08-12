@@ -59,7 +59,7 @@ class FileServiceTest {
     given(fileRepository.save(any(File.class))).willReturn(staticFile);
 
     var mpf = new MockMultipartFile(randomString(), "", randomString(), randomByteArray());
-    long ret = fileService.persistFile(mpf);
+    long ret = fileService.persistNewFile(mpf);
 
     assertTrue(ret > 0L);
     verify(fileRepository, times(1)).save(any());

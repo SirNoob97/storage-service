@@ -10,7 +10,7 @@ import com.sirnoob97.storageservice.file.dto.FileInfoDto;
 
 public interface FileService {
   
-  long persistFile(MultipartFile mpf) throws IOException;
+  long persistNewFile(MultipartFile mpf) throws IOException;
 
   FileDto getFileDto(long id);
 

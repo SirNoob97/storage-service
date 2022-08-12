@@ -30,7 +30,7 @@ public class FileServiceDefaultImpl implements FileService {
   private final FileDataRepository fileDataRepository;
 
   @Override
-  public long persistFile(MultipartFile mpf) throws IOException {
+  public long persistNewFile(MultipartFile mpf) throws IOException {
     FileData fileData = FileData.builder().fileData(mpf.getBytes()).build();
     var persistedData = fileDataRepository.save(fileData);
     var fileInfo = File.builder()
