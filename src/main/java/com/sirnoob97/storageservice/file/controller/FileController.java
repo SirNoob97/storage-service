@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Set;
 
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -52,7 +53,7 @@ public class FileController {
   }
 
   @GetMapping(path = "/{id}")
-  public ResponseEntity<?> download(@PathVariable long id) {
+  public ResponseEntity<Resource> download(@PathVariable long id) {
     var file = fileService.getFileDto(id);
     var contentDisposition = String.format("attachment; filename=\"%s\"", file.getFileName());
     var responseBody = new ByteArrayResource(file.getFileData());
