@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -70,8 +71,9 @@ public class FileServiceDefaultImpl implements FileService {
   }
 
   private File buildFile(MultipartFile mpf, FileData data) {
+    var fileName = StringUtils.cleanPath(mpf.getOriginalFilename());
     return File.builder()
-        .fileName(mpf.getName())
+        .fileName(fileName)
         .mimeType(mpf.getContentType())
         .fileSize(mpf.getSize())
         .data(data)
