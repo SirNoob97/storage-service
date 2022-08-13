@@ -25,7 +25,7 @@ import com.sirnoob97.storageservice.file.service.FileService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Controller(value = "/file")
+@Controller(value = "/files")
 public class FileController {
 
   private final FileService fileService;
