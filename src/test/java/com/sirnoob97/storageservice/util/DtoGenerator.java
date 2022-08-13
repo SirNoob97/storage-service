@@ -6,12 +6,23 @@ import com.sirnoob97.storageservice.file.dto.FileDto;
 import com.sirnoob97.storageservice.file.dto.FileInfoDto;
 
 public class DtoGenerator {
-  
+
   public static FileInfoDto randomFileInfoDto() {
-    return new FileInfoDto(randomLong(), randomString(), randomLong(), randomString());
+    return FileInfoDto.builder()
+        .id(randomLong())
+        .fileName(randomString())
+        .fileSize(randomLong())
+        .mimeType(randomString())
+        .downloadUrl(randomString())
+        .build();
   }
 
   public static FileDto randomFileDto() {
-    return new FileDto(randomString(), randomLong(), randomString(), randomByteArray());
+    return FileDto.builder()
+        .fileName(randomString())
+        .fileSize(randomLong())
+        .mimeType(randomString())
+        .fileData(randomByteArray())
+        .build();
   }
 }

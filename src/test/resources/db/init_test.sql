@@ -26,7 +26,7 @@ ALTER TABLE
 
 CREATE TABLE file_data(
     id BIGINT NOT NULL,
-    file_data oid NOT NULL
+    file_data bytea NOT NULL
 );
 
 ALTER TABLE
@@ -60,31 +60,31 @@ UPDATE OF data_id ON file
 FOR EACH ROW EXECUTE PROCEDURE prevent_data_id_update_fn();
 
 
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
-INSERT INTO file_data (file_data) VALUES (lo_import('/etc/hostname'));
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
+INSERT INTO file_data (file_data) VALUES (pg_read_file('/etc/hostname')::bytea);
 
 INSERT INTO file (file_name, file_size, mime_type, data_id) VALUES ('TristiqueFusceCongue.xls', 53, 'application/x-excel', 1);
 INSERT INTO file (file_name, file_size, mime_type, data_id) VALUES ('LectusVestibulumQuam.tiff', 159, 'image/tiff', 2);

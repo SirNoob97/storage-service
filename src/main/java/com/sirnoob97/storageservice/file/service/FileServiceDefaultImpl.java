@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -30,17 +31,13 @@ public class FileServiceDefaultImpl implements FileService {
   private final FileDataRepository fileDataRepository;
 
   @Override
-  public long persistFile(MultipartFile mpf) throws IOException {
-    FileData fileData = FileData.builder().fileData(mpf.getBytes()).build();
+  public FileInfoDto persistNewFile(MultipartFile mpf, String downloadURL) throws IOException {
+    var fileData = extractFileData(mpf);
     var persistedData = fileDataRepository.save(fileData);
-    var fileInfo = File.builder()
-        .fileName(mpf.getName())
-        .mimeType(mpf.getContentType())
-        .fileSize(mpf.getSize())
-        .data(persistedData)
-        .build();
+    var file = buildFile(mpf, persistedData);
+    var persistedFile = fileRepository.save(file);
 
-    return fileRepository.save(fileInfo).getId();
+    return builFileInfoDto(downloadURL, persistedFile);
   }
 
   @Override
@@ -62,4 +59,29 @@ public class FileServiceDefaultImpl implements FileService {
       throw FILE_NOT_FOUND_EXCEPTION;
     }
   }
+
+  private FileInfoDto builFileInfoDto(String downloadURL, File file) {
+    return FileInfoDto.builder()
+        .id(file.getId())
+        .fileName(file.getFileName())
+        .fileSize(file.getFileSize())
+        .mimeType(file.getMimeType())
+        .downloadUrl(downloadURL + file.getId())
+        .build();
+  }
+
+  private File buildFile(MultipartFile mpf, FileData data) {
+    var fileName = StringUtils.cleanPath(mpf.getOriginalFilename());
+    return File.builder()
+        .fileName(fileName)
+        .mimeType(mpf.getContentType())
+        .fileSize(mpf.getSize())
+        .data(data)
+        .build();
+  }
+
+  private FileData extractFileData(MultipartFile mpf) throws IOException {
+    return FileData.builder().fileData(mpf.getBytes()).build();
+  }
+
 }
