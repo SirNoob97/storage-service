@@ -67,7 +67,7 @@ public class FileController {
 
   @DeleteMapping(path = "/{id}")
   public ResponseEntity<Void> delete(@PathVariable long id) {
-
-    return null;
+    fileService.deleteFile(id);
+    return ResponseEntity.noContent().build();
   }
 }
