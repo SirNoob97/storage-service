@@ -1,5 +1,7 @@
 -- File Table --
 
+DROP TABLE IF EXISTS file CASCADE;
+
 CREATE TABLE file(
     id BIGINT NOT NULL,
     file_name VARCHAR(255) NOT NULL,
@@ -38,6 +40,8 @@ ALTER TABLE
 
 -- File_Data Table --
 
+DROP TABLE IF EXISTS file_data CASCADE;
+
 CREATE TABLE file_data(
     id BIGINT NOT NULL,
     file_data bytea NOT NULL
@@ -56,7 +60,9 @@ ALTER TABLE
 
 -- Procedures --
 
-CREATE OR REPLACE FUNCTION prevent_data_id_update_fn() RETURNS TRIGGER AS
+DROP FUNCTION IF EXISTS prevent_data_id_update_fn CASCADE;
+
+CREATE FUNCTION prevent_data_id_update_fn() RETURNS TRIGGER AS
 $$
 BEGIN
    RAISE EXCEPTION 'Column "data_id" is not editable';
@@ -64,6 +70,8 @@ END;
 $$ LANGUAGE PLPGSQL COST 100;
 
 -- Triggers --
+
+DROP TRIGGER IF EXISTS prevent_data_id_update_trg ON file CASCADE;
 
 CREATE TRIGGER prevent_data_id_update_trg
 BEFORE
