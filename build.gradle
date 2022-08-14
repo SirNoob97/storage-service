@@ -43,3 +43,7 @@ dependencyManagement {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+bootJar {
+	archiveFileName.set('storage_service.jar')
+}
