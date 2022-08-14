@@ -11,6 +11,6 @@ This service stores files in a PostgreSQL database as BLOB(oid).
 
 ## SQL Diagram
 
-![db-diagram](db/db_diagram.png)
+![db-diagram](postgreSQL/db_diagram.png)
 
-The `file_name` column store only the **file name**, absolute paths sent by clients are ignored, `file_size` column store the size of the file in **bytes**.
+The `file_size` column store the size of the file as **bytes**.
