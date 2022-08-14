@@ -47,3 +47,8 @@ tasks.named('test') {
 bootJar {
 	archiveFileName.set('storage_service.jar')
 }
+
+tasks.register('showClasspath') {
+	def cp = sourceSets.main.compileClasspath.asPath
+	println "${cp}"
+}
