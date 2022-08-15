@@ -33,9 +33,7 @@ public class FileController {
 
   @PostMapping
   public ResponseEntity<FileInfoDto> upload(@RequestPart(name = "attachment") MultipartFile mpf) throws IOException {
-    var downloadUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-        .path("/")
-        .toUriString();
+    var downloadUrl = genDownloadUrl();
     var ret = fileService.persistNewFile(mpf, downloadUrl);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(ret);
@@ -69,5 +67,12 @@ public class FileController {
   public ResponseEntity<Void> delete(@PathVariable long id) {
     fileService.deleteFile(id);
     return ResponseEntity.noContent().build();
+  }
+
+  private String genDownloadUrl() {
+    var ret = ServletUriComponentsBuilder.fromCurrentContextPath()
+        .path("/")
+        .toUriString();
+    return ret;
   }
 }
