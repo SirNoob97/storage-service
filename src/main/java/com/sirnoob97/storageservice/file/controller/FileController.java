@@ -48,7 +48,7 @@ public class FileController {
 
   @GetMapping
   public ResponseEntity<Set<FileInfoDto>> list(@RequestParam int limit, @RequestParam int offset) {
-    return ResponseEntity.ok(fileService.listFiles(limit, offset));
+    return ResponseEntity.ok(fileService.listFiles(limit, offset, genDownloadUrl()));
   }
 
   @GetMapping(path = "/{id}")
