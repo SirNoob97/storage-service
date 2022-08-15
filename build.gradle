@@ -49,6 +49,6 @@ bootJar {
 }
 
 tasks.register('showClasspath') {
-	def cp = sourceSets.main.compileClasspath.asPath
+	def cp = sourceSets.main.runtimeClasspath.asPath
 	println "${cp}"
 }
