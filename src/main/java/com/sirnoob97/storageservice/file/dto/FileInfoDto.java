@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +16,8 @@ public class FileInfoDto {
   private String fileName;
   private Long fileSize;
   private String mimeType;
+
+  @Setter
   private String downloadUrl;
 
   public FileInfoDto(Long id, String fileName, Long fileSize, String mimeType) {

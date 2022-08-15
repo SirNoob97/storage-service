@@ -47,8 +47,13 @@ public class FileServiceDefaultImpl implements FileService {
   }
 
   @Override
-  public Set<FileInfoDto> listFiles(int limit, int offset) {
-    return fileRepository.listFileInfoDtos(limit, offset);
+  public Set<FileInfoDto> listFiles(int limit, int offset, String downloadURL) {
+    var dtos = fileRepository.listFileInfoDtos(limit, offset);
+    for (var dto : dtos) {
+      dto.setDownloadUrl(downloadURL + dto.getId());
+    }
+
+    return dtos;
   }
 
   @Override
