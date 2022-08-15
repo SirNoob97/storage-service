@@ -2,10 +2,26 @@
 
 set -eu -o pipefail
 
+output_dir=reduced-jre
+
+[ -d $output_dir ] && rm -rf $output_dir
+
 classpath=$(./gradlew -q showClassPath)
 
-# TODO: get java modules from this
-jdeps --multi-release 17 -cp $classpath ./build/libs/storage_service.jar
+modules=$(jdeps -classpath $classpath \
+  -recursive \
+  -summary \
+  --multi-release 17 \
+  build/libs/storage_service.jar | \
+  grep -Eo '\s\w{1,}\.\w{1,}$' | \
+  sort | \
+  uniq)
 
-# TODO: replace the modules wiht the output from jdeps
-jlink --add-modules 'java.base,java.logging,java.desktop,java.naming,java.instrument,java.management,java.xml,java.security.jgss,java.sql,java.transaction.xa,jdk.unsupported' --strip-debug --no-man-pages --no-header-files --compress 2 --output reduced-jre
+modules=$(echo $modules | tr ' ' ',')
+
+jlink --add-modules "${modules},java.security.jgss,java.transaction.xa" \
+  --strip-debug \
+  --no-man-pages \
+  --no-header-files \
+  --compress 2 \
+  --output $output_dir
