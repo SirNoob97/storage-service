@@ -15,7 +15,7 @@ modules=$(jdeps -classpath $classpath \
   -recursive \
   build/libs/storage_service.jar)
 
-jlink --add-modules "${modules},java.security.jgss,java.transaction.xa" \
+jlink --add-modules $modules \
   --strip-debug \
   --no-man-pages \
   --no-header-files \
