@@ -9,15 +9,11 @@ output_dir=reduced-jre
 classpath=$(./gradlew -q showClassPath)
 
 modules=$(jdeps -classpath $classpath \
-  -recursive \
-  -summary \
   --multi-release 17 \
-  build/libs/storage_service.jar | \
-  grep -Eo '\s\w{1,}\.\w{1,}$' | \
-  sort | \
-  uniq)
-
-modules=$(echo $modules | tr ' ' ',')
+  --print-module-deps \
+  --ignore-missing-deps \
+  -recursive \
+  build/libs/storage_service.jar)
 
 jlink --add-modules "${modules},java.security.jgss,java.transaction.xa" \
   --strip-debug \
