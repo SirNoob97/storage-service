@@ -73,7 +73,7 @@ class FileServiceTest {
   void test_ListFiles_ReturnANonEmptySetOfFileInfoDto() {
     var fileInfoDto = randomFileInfoDto();
     given(fileRepository.listFileInfoDtos(anyInt(), anyInt())).willReturn(Set.of(fileInfoDto));
-    var ret = fileService.listFiles(1, 0);
+    var ret = fileService.listFiles(1, 0, "TEST");
 
     assertNotNull(ret);
     assertFalse(ret.isEmpty());
@@ -84,7 +84,7 @@ class FileServiceTest {
   @Test
   void test_ListFiles_ReturnAnEmptySetOfFileInfoDto() {
     given(fileRepository.listFileInfoDtos(anyInt(), anyInt())).willReturn(Set.of());
-    var ret = fileService.listFiles(1, 0);
+    var ret = fileService.listFiles(1, 0, "TEST");
 
     assertNotNull(ret);
     assertTrue(ret.isEmpty());
