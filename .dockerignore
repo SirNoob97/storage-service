@@ -1,0 +1,7 @@
+*
+!gradle
+!gradlew
+!build.gradle
+!settings.gradle
+!src
+!*.sh

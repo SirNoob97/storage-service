@@ -66,7 +66,7 @@ class FileControllerTest {
 
   @Test
   void test_List_ReturnAnFileInfoDtoSetAsJsonArray() throws Exception {
-    given(fileService.listFiles(anyInt(), anyInt())).willReturn(Set.of(randomFileInfoDto()));
+    given(fileService.listFiles(anyInt(), anyInt(), anyString())).willReturn(Set.of(randomFileInfoDto()));
 
     mockMvc.perform(get("/")
         .param("limit", "10")
@@ -82,7 +82,7 @@ class FileControllerTest {
         .andExpect(jsonPath("$[0].id").exists())
         .andExpect(jsonPath("$[0].id").isNumber());
 
-    verify(fileService, times(1)).listFiles(anyInt(), anyInt());
+    verify(fileService, times(1)).listFiles(anyInt(), anyInt(), anyString());
   }
 
   @Test

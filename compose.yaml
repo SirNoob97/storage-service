@@ -2,19 +2,42 @@ version: '3.9'
 services:
   postgreSQL:
     image: postgres:14-alpine3.16
-    container_name: sn_postgreSQL
-    hostname: sn_postgreSQL
-    environment:
-      POSTGRES_USER: sn_user
-      POSTGRES_PASSWORD: sn_user
-      POSTGRES_DB: sn_storage_service
-    ports:
-      - "127.0.0.1:5432:5432"
+    container_name: ${POSTGRES_HOSTNAME:-sn_postgreSQL}
+    hostname: ${POSTGRES_HOSTNAME:-sn_postgreSQL}
+    env_file: ./env/postgreSQL
     volumes:
       - ./postgreSQL/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+    networks:
+      - storage_service
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "sn_user"]
       interval: 20s
       timeout: 5s
       retries: 3
       start_period: 10s
+
+  storage_service:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: storage_service:latest
+    container_name: ${STORAGE_SERVICE_NAME:-storage_service}
+    hostname: ${STORAGE_SERVICE_NAME:-storage_service}
+    depends_on:
+      postgreSQL:
+        condition: service_healthy
+    env_file:
+      - ./env/storage_service
+      - ./env/postgreSQL
+    ports:
+      - mode: ingress
+        host_ip: 127.0.0.1
+        target: "${STORAGE_SERVICE_PORT:-8080}"
+        published: "${STORAGE_SERVICE_PORT:-8080}"
+        protocol: tcp
+    networks:
+      - storage_service
+
+networks:
+  storage_service:
+    name: storage_service_nt

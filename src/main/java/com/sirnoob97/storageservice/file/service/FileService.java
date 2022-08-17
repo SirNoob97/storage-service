@@ -14,7 +14,7 @@ public interface FileService {
 
   FileDto getFileDto(long id);
 
-  Set<FileInfoDto> listFiles(int limit, int offset);
+  Set<FileInfoDto> listFiles(int limit, int offset, String downloadURL);
 
   void deleteFile(long id);
 }

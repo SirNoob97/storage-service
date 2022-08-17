@@ -2,9 +2,10 @@ spring:
   main:
     banner-mode: "off"
   datasource:
-    url: jdbc:postgresql://localhost:5432/sn_storage_service
-    username: sn_user
-    password: sn_user
+    url: jdbc:postgresql://${POSTGRES_HOSTNAME:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:sn_storage_service}
+    username: ${POSTGRES_USER:sn_user}
+    password: ${POSTGRES_PASSWORD:sn_user}
+
   jpa:
     generate-ddl: false
     hibernate:
@@ -16,6 +17,6 @@ spring:
   servlet:
     multipart:
       # Threshold after which files are written to disk.
-      file-size-threshold: 2KB
+      file-size-threshold: 5KB
       max-file-size: 200MB
       max-request-size: 215MB

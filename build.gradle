@@ -43,3 +43,12 @@ dependencyManagement {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.register('showClasspath') {
+	def cp = sourceSets.main.runtimeClasspath.asPath
+	println "${cp}"
+}
+
+bootJar {
+	archiveFileName.set('storage_service.jar')
+}
