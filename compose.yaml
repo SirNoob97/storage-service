@@ -13,3 +13,23 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+
+  storage_service:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: storage_service:latest
+    container_name: ${STORAGE_SERVICE_NAME:-storage_service}
+    hostname: ${STORAGE_SERVICE_NAME:-storage_service}
+    depends_on:
+      postgreSQL:
+        condition: service_healthy
+    env_file:
+      - ./env/storage_service
+      - ./env/postgreSQL
+    ports:
+      - mode: ingress
+        host_ip: 127.0.0.1
+        target: "${STORAGE_SERVICE_PORT:-8080}"
+        published: "${STORAGE_SERVICE_PORT:-8080}"
+        protocol: tcp
