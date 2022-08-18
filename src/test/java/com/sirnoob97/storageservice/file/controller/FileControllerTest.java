@@ -51,7 +51,7 @@ class FileControllerTest {
 
     var mockFile = new MockMultipartFile("attachment", "TEST", TEXT_PLAIN, "TEST".getBytes());
 
-    mockMvc.perform(multipart(POST, "/")
+    mockMvc.perform(multipart(POST, "/files")
         .file(mockFile)
         .accept(JSON))
         .andExpect(status().isCreated())
@@ -68,7 +68,7 @@ class FileControllerTest {
   void test_List_ReturnAnFileInfoDtoSetAsJsonArray() throws Exception {
     given(fileService.listFiles(anyInt(), anyInt(), anyString())).willReturn(Set.of(randomFileInfoDto()));
 
-    mockMvc.perform(get("/")
+    mockMvc.perform(get("/files")
         .param("limit", "10")
         .param("offset", "0")
         .accept(JSON))
@@ -97,7 +97,7 @@ class FileControllerTest {
 
     given(fileService.getFileDto(anyLong())).willReturn(fileDto);
 
-    mockMvc.perform(get("/1")
+    mockMvc.perform(get("/files/1")
         .accept(fileDto.getMimeType()))
         .andExpect(status().isOk())
         .andExpect(content().contentType(TEXT_PLAIN))
@@ -111,7 +111,7 @@ class FileControllerTest {
   void test_Delete_Return204AsStatusCode() throws Exception {
     doNothing().when(fileService).deleteFile(anyLong());
 
-    mockMvc.perform(delete("/1"))
+    mockMvc.perform(delete("/files/1"))
     .andExpect(status().isNoContent());
 
     verify(fileService, times(1)).deleteFile(anyLong());
