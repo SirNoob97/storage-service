@@ -4,4 +4,4 @@
 !build.gradle
 !settings.gradle
 !src
-!*.sh
+!scripts/*.sh
